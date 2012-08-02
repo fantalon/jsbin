@@ -31,8 +31,8 @@ file_put_contents(SPROCKETIZED, $js);
 
 // google compile in to jsbin.VERSION.js
 echo "Google compiler compressing...\n";
-system('java -jar "./lib/compiler.jar" --js="' . SPROCKETIZED . '" --js_output_file="' . PRODUCTION . '" --warning_level=QUIET');
+system('java -jar "./lib/compiler.jar" --js="' . SPROCKETIZED . '" --js_output_file="' . PRODUCTION . '" --warning_level=QUIET --compilation_level=WHITESPACE_ONLY');
 
-unlink(SPROCKETIZED);
+//unlink(SPROCKETIZED);
 echo "Compressed: " . PRODUCTION . "\nFile size: " . filesize(PRODUCTION) . " bytes.\n";
 ?>

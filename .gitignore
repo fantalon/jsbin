@@ -1,3 +1,7 @@
 logs
 logs/*
-config.php
+.settings.xml
+js/tmp.*.js
+js/jsbin-*.js
+*.swp
+.settings.xml

@@ -30,10 +30,13 @@ jQuery.expr[':'].host = function(obj, index, meta, stack) {
       }, delay);
     };
   }
-window.jsbin.settings = JSON.parse(localStorage.getItem('settings') || '{ "show": { "html": true, "javascript": true }, "theme": "jsbin" }');
+window.jsbin.settings = JSON.parse(localStorage.getItem('settings') || '{ "show": { "html": true, "javascript": true }, "theme": "colorkit" }');
 //= require "vendor/json2"
 //= require "editors/editors"
 //= require "render/render"
 //= require "chrome/beta"
 //= require "chrome/app"
+//= require "chrome/list"
+//= require "chrome/custom-libraries"
+//= require "chrome/panel-keymap-change"
 })(this, document);

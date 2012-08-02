@@ -7,22 +7,50 @@ var editors = {};
 
 window.editors = editors;
 
+var HTMLfoldFunc = CodeMirror.newFoldFunction(CodeMirror.tagRangeFinder);
 editors.html = CodeMirror.fromTextArea(document.getElementById('html'), {
   parserfile: [],
   tabMode: 'shift',
   mode: 'text/html',
   onChange: changecontrol,
   lineWrapping: true,
-  theme: jsbin.settings.theme || 'jsbin'
+  theme: jsbin.settings.theme || 'jsbin',
+  lineNumbers: true,
+  tabSize: 4,
+  indentUnit: 4,
+  indentWithTabs: true,
+  //keyMap: "vim",
+  onGutterClick: HTMLfoldFunc,
+  onCursorActivity: function() {
+    editors.html.setLineClass(hlLineInHTML, null, null);
+    hlLineInHTML = editors.html.setLineClass(editors.html.getCursor().line, null, "activeline");
+    editors.html.matchHighlight("CodeMirror-matchhighlight");
+  }
 });
 
+var JSfoldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
 editors.javascript = CodeMirror.fromTextArea(document.getElementById('javascript'), {
   mode: 'javascript',
   tabMode: 'shift',
   onChange: changecontrol,
   lineWrapping: true,
-  theme: jsbin.settings.theme || 'jsbin'
+  theme: jsbin.settings.theme || 'jsbin',
+  onCursorActivity: function() {
+    editors.javascript.setLineClass(hlLineInJS, null, null);
+    hlLineInJS = editors.javascript.setLineClass(editors.javascript.getCursor().line, null, "activeline");
+    editors.javascript.matchHighlight("CodeMirror-matchhighlight");
+  },
+  lineNumbers: true,
+  tabSize: 4,
+  indentUnit: 4,
+  indentWithTabs: true,
+  //keyMap: "vim",
+  //extraKeys: {"Ctrl-Space": "autocomplete"},
+  onGutterClick: JSfoldFunc
+
 });
+var hlLineInHTML = editors.html.setLineClass(0, "activeline");
+var hlLineInJS = editors.javascript.setLineClass(0, "activeline");
 
 setupEditor('javascript');
 setupEditor('html');
@@ -162,7 +190,12 @@ function populateEditor(panel) {
       changed = false;
 
   if (data == template[panel]) { // restored from original saved
-    editors[panel].setCode(data);
+    if( data ) {
+    	editors[panel].setCode(data);
+	} else  {
+    	editors[panel].setCode(saved);
+	}
+
   } else if (data && sessionURL == template.url) { // try to restore the session first - only if it matches this url
     editors[panel].setCode(data);
     // tell the document that it's currently being edited, but check that it doesn't match the saved template
@@ -171,7 +204,7 @@ function populateEditor(panel) {
   } else if (saved !== null && !/edit/.test(window.location) && !window.location.search) { // then their saved preference
     editors[panel].setCode(saved);
   } else { // otherwise fall back on the JS Bin default
-    editors[panel].setCode(template[panel]);
+    editors[panel].setCode(template[panel]||saved);
   }
   
   if (changed) {

@@ -47,7 +47,13 @@ if ($code_id) {
 <head>
 <meta charset=utf-8 />
 <title>JS Bin - Collaborative JavaScript Debugging</title>
+
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+
 <link rel="stylesheet" href="<?php echo ROOT?>css/style.css?<?php echo VERSION?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo ROOT?>css/theme/colorkit.css?<?php echo VERSION?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo ROOT?>css/andrwj.css?<?php echo VERSION?>" type="text/css" />
 </head>
 <!--[if lt IE 7 ]><body class="source ie ie6"><![endif]--> 
 <!--[if lt IE 8 ]><body class="source ie ie7"><![endif]--> 
@@ -56,8 +62,10 @@ if ($code_id) {
 <div id="control">
   <div class="control">
     <div class="buttons">
-      <a class="tab button source group left" accesskey="1" href="#source">Code</a>
-      <a class="tab button preview group right gap" accesskey="2" href="#preview" title="Run with alerts, prompts, etc">Render</a>
+      <a class="tab button source group left" accesskey="1" href="#source"><i class="icon-pencil"></i></a>
+      <a class="tab button preview group right gap" accesskey="2" href="#preview" title="Run with alerts, prompts, etc"><i class="icon-eye-open"></i></a>
+      <a class="tab button newbin left right gap" accesskey="3" id="start-new-bin" href="#" title="start new bin.."><i class="icon-file"></i></a>
+      <a class="tab button list" accesskey="4" href="#list" title="list" id="btnSavedList"><i class="icon-list-alt"></i>&nbsp;</a>
       <a title="Revert" class="button light group left" id="revert" href="#"><img class="enabled" src="<?php echo ROOT?>images/revert.png" /><img class="disabled" src="<?php echo ROOT?>images/revert-disabled.png" /></a>
     <?php if ($code_id) : ?>
       <a id="jsbinurl" class="button group light left" href="http://<?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?>"><?php echo $_SERVER['HTTP_HOST'] . ROOT . $code_id?></a>
@@ -75,31 +83,31 @@ if ($code_id) {
           <a id="startingpoint" title="Set as starting code" class="button group" href="<?php echo ROOT?>save">As template</a>
       </div>
 
-      <span id="panelsvisible" class="gap">View: 
-        <input type="checkbox" data-panel="javascript" id="showjavascript"><label for="showjavascript">JavaScript</label>
+      <span id="panelsvisible" class="gap">
+        <input type="checkbox" data-panel="javascript" id="showjavascript"><label for="showjavascript">JS</label>
         <input type="checkbox" data-panel="html" id="showhtml"><label for="showhtml">HTML</label>
-        <input type="checkbox" data-panel="live" id="showlive"><label for="showlive">Real-time preview</label>
+        <input type="checkbox" data-panel="live" id="showlive"><label for="showlive">View</label>
       </span>
     </div>
   </div>
   <div class="help">
     <ul class="flat">
-      <li><a target="_blank" href="http://jsbin.tumblr.com">Help &amp; tutorials</a></li>
-      <li class="prefsButton"><a href="#"><img src="/images/gear.png"></a></li>
+      <li><a href="#" id="showKeyHelp"><i class="icon-question-sign"></i></a></li>
+      <li class="prefsButton" style="visibility:hidden"><a href="#"><img src="/images/gear.png"></a></li>
     </ul>
   </div>
 </div>
 <div id="bin" class="stretch" style="opacity: 0; filter:alpha(opacity=0);">
   <div id="source" class="binview stretch">
     <div class="code stretch javascript">
-      <div class="label"><p><strong id="jslabel">JavaScript</strong></p></div>
+      <div class="label"><p><strong id="jslabel">JavaScript</strong><button class="andrwj-keymap-change">vim</button></p></div>
       <div class="editbox">
         <textarea spellcheck="false" autocapitalize="off" autocorrect="off" id="javascript"></textarea>
       </div>
     </div>
     <div class="code stretch html">
       <div class="label">
-        <p>HTML</p>
+        <p>HTML<button class="andrwj-keymap-change">vim</button></p>
         <label for="library">Include</label>
         <select id="library">
           <option value="none">None</option>
@@ -125,6 +133,7 @@ if ($code_id) {
     <input type="hidden" name="method" />
   </form>
 </div>
+<div id="listContainer"><div id="savedlist"></div></div>
 <div id="tip"><p>You can jump to the latest bin by adding <code>/latest</code> to your URL</p><a class="dismiss" href="#">Dismiss x</a></div>
 <div id="keyboardHelp">
   <div>
@@ -186,6 +195,25 @@ if ($code_id) {
   </div>
 </div>
 <div class="prefsOverlay"></div>
+<div class="modal fade" id="newbinmodal" style="z-index:999999;">
+  <div class="modal-header">
+	<button class="close" data-dismiss="modal">×</button>
+	<h3>Start New Project</h3>
+  </div>
+  <div class="modal-body">
+	  
+	<form class="well" id="form-new-bin">
+	  <label></label>
+	  <input type="text" class="span4" placeholder="Type a new url ... " id="new-project-name">
+	  <span class="help-block"><i class="icon-exclamation-sign"></i> 주의: 공백문자는 '-' 문자로 대체됩니다</span>
+	</form>
+	  
+  </div>
+  <div class="modal-footer">
+	<a href="#" class="btn" id="cancel-new-bin">Close</a>
+	<a href="#" class="btn btn-primary" id="create-new-bin">Create</a>
+  </div>
+</div>
 <script>
 <?php
   // assumes http - if that's not okay, this need to be changed
@@ -199,18 +227,6 @@ if ($code_id) {
 </script>
 <script>jsbin = { root: "<?php echo HOST ?>", version: "<?php echo VERSION?>" }; tips = <?php echo file_get_contents('tips.json')?>;</script>
 <script src="<?php echo ROOT?>js/<?php echo VERSION?>/jsbin.js"></script>
-<?php if (!OFFLINE) : ?>
-<script>
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-1656750-13']);
-_gaq.push(['_trackPageview']);
-
-(function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
-})();
-</script>
-<?php endif ?>
+<script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.js"></script>
 </body>
 </html>
