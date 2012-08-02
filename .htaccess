@@ -33,3 +33,4 @@ RewriteRule ^(.*)$ $1.html [L]
 RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
+AddType font/opentype	woff

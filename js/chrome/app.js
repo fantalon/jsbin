@@ -11,7 +11,7 @@ var debug = jsbin.settings.debug === undefined ? false : jsbin.settings.debug,
     $bin = $('#bin'),
     loadGist,
     $document = $(document),
-    splitterSettings = JSON.parse(localStorage.getItem('splitterSettings') || '[ { "x" : null }, { "x" : null } ]'),
+    splitterSettings = JSON.parse(localStorage.getItem('splitterSettings') || '[ { "x" : null }, { "x" : null }, {"x": null} ]'),
     unload = function () {
       sessionStorage.setItem('javascript', editors.javascript.getCode());
       sessionStorage.setItem('html', editors.html.getCode());

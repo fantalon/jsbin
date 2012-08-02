@@ -2840,7 +2840,7 @@ loop:   for (;;) {
         nobreak(prevtoken, token);
         nospace();
         var e = expression(0), s;
-        if (e && e.type === '(string)') {
+        if (false && e && e.type === '(string)') { /* AJ: I don't want to be warned this kind of advice */
             if (!option.evil && (e.value === 'eval' || e.value === 'execScript')) {
                 warning("eval is evil.", that);
             }
@@ -3109,7 +3109,7 @@ loop:   for (;;) {
     varstatement.exps = true;
 
     blockstmt('function', function () {
-        if (inblock) {
+        if (inblock && false) {
             warning("Function declarations should not be placed in blocks. " +
                 "Use a function expression or move the statement to the top of " +
                 "the outer function.", token);

@@ -119,39 +119,45 @@ $('#control .tab').click(function (event) {
 
 var prefsOpen = false;
 
-$('.prefsButton a').click(function (e) {
-  prefsOpen = true;
+$('a#btnSavedList').click(function (e) {
   e.preventDefault();
-  $body.toggleClass('prefsOpen');
+  if( !(jsbin.active && jsbin.settings.home) ) return false;
+  prefsOpen = true;
+  $(window).trigger('togglehelp');
+  return false;
 });
 
-// $('#control div.help a:last').click(function () {
-//   $(window).trigger('togglehelp');
-//   return false;
-// });
+$('#showKeyHelp').click(function () {
+  $("#keyboardHelp").show();
+   helpOpen = true;
+   return false;
+});
 
 // $('#help a:host(' + window.location.host + ')').live('click', function () {
 //   $('#help #content').load(this.href + '?' + Math.random());
 //   return false;    
 // });
 
-// var helpOpen = false;
-// $(window).bind('togglehelp', function () {
-//   var s = 100, right = helpOpen ? 0 : 300;
-// 
-//   if (helpOpen == false) {
-//     $('#help #content').load('/help/index.html?' + Math.random());    
-//   }
-//   $bin.find('> div').animate({ right: right }, { duration: s });
-//   $('#control').animate({ right: right }, { duration: s });
-//   
-//   $('#help').animate({ right: helpOpen ? -300 : 0 }, { duration: s});
-//   
-//   helpOpen = helpOpen ? false : true;
-// });
-// 
-// $(document).keyup(function (event) {
-//   if (helpOpen && event.keyCode == 27) {
-//     $(window).trigger('togglehelp');
-//   }
-// });
+ var helpOpen = false;
+ $(window).bind('togglehelp', function () {
+   var s = 100, right = helpOpen ? 0 : 450;
+   if (helpOpen == false) {
+     $('#savedlist').load('/andrwj/list');// + Math.random());    
+   }
+   $bin.find('> div').animate({ right: right }, { duration: s });
+   //$('#control').animate({ right: right }, { duration: s });
+   
+   $("#listContainer").height( $("#bin").height() );
+   $('#listContainer').animate({ right: helpOpen ? -450 : 0 }, { duration: s});
+   
+   helpOpen = helpOpen ? false : true;
+   //$body.toggleClass('prefsOpen');
+ });
+ 
+ $(document).keyup(function (event) {
+   if (helpOpen && event.keyCode == 27) {
+  	$("#keyboardHelp").hide();
+  	 //$body.toggleClass('prefsOpen');
+     $(window).trigger('togglehelp');
+   }
+ });

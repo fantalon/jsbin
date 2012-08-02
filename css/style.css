@@ -1306,11 +1306,11 @@ div.CodeMirror-selected { background: #d9d9d9; }
 }
 
 .prefsButton {
-  display: none !important;
+  /* display: none !important; */
 }
 
 .beta .prefsButton {
-/*  display: block;*/
+  display: block;
 }
 
 .prefsButton img {

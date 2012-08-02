@@ -48,8 +48,15 @@ $('#library').bind('init', function () {
     if (code.indexOf('<head') !== -1) {
       code = code.replace('<head', "<head>\n<" + 'script class="jsbin" src="' + lib.scripts[libIndex[1]].url + '"><' + '/script');
       if (lib.requires) {
-        state.add++;
-        code = code.replace('<head', "<head>\n<" + 'script class="jsbin" src="' + lib.requires + '"><' + '/script');
+	    if("string" == typeof lib.requires) {
+        	state.add++;
+        	code = code.replace('<head', "<head>\n<" + 'script class="jsbin" src="' + lib.requires + '"><' + '/script');
+		} else if("[object Array]" == Object.prototype.toString.call(lib.requires)) {
+        	for (i = 0; i < lib.requires.length; i++) {
+        		state.add++;
+        		code = code.replace('<head', "<head>\n<" + 'script class="jsbin" src="' + lib.requires[i] + '"><' + '/script');
+			}
+		}
       }
       
       if (lib.style) {
