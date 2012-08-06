@@ -18,3 +18,67 @@
 .cm-s-colorkit span.cm-link { color: #3a3; }
 .cm-s-colorkit div.CodeMirror-selected { background: #d2dcf8 !important; }
 
+
+/* insert tab */
+      .cm-tab:after {
+        content: "\21e5";
+        display: -moz-inline-block;
+        display: -webkit-inline-block;
+        display: inline-block;
+        width: 0px;
+        position: relative;
+        overflow: visible;
+        left: -1.4em;
+        color: #aaa;
+		opacity: 0.5;
+      }
+
+/* matching highlight */
+      span.CodeMirror-matchhighlight { background: #f4f47d; }
+      .CodeMirror-focused span.CodeMirror-matchhighlight { background: #f8acac; !important }
+
+/* show active line */
+      .activeline {background: #e6e6e6 !important;}
+
+/* match highlight */
+.CodeMirror-completions select {
+  background: #fafafa;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: monospace;
+}
+
+/* guttor */
+.CodeMirror-gutter {
+  width: 3em;
+  background: white;
+}
+
+/* 키맵변경 기능 */
+.andrwj-keymap-change {
+	margin: 0 0 3px 5px;
+	padding: 0 1px 5px 1px;
+	height: 16px; 
+	font-size: 8pt;
+	color: gray;
+	font-weight: normal;
+	line-height: 12px;
+}
+
+.andrwj-keymap-change.vim-on {
+	color: green;
+	font-weight: bold;
+}
+
+/* 컨트롤 박스 폰트 변경 */
+body {
+	font-family: "Source Sans Pro", "Apple SD Gothic Neo", "Trebuchet MS", "SourceSans", "Helvetica Neue", Helvetica, Arial;
+}
+
+/* 편집기 폰트 */
+.editbox .CodeMirror {
+	font-family: "Source Sasns Pro", "Apple SD Gothic Neo", "Trebuchet MS", "SourceSans", "Helvetica Neue", Helvetica, Arial;
+	font-size: 13px;
+}
