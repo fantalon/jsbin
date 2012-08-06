@@ -3,3 +3,4 @@ logs/*
 config.*.json
 public/js/jsbin*.js
 !config.default.json
+*.swp

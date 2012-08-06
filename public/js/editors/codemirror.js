@@ -4,3 +4,4 @@
 //= require "../vendor/codemirror2/javascript"
 //= require "../vendor/codemirror2/htmlmixed"
 //= require "../vendor/codemirror2/searchcursor"
+//= require "../vendor/codemirror2/vim"
