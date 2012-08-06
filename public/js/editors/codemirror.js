@@ -5,3 +5,5 @@
 //= require "../vendor/codemirror2/htmlmixed"
 //= require "../vendor/codemirror2/searchcursor"
 //= require "../vendor/codemirror2/vim"
+//= require "../vendor/codemirror2/match-highlighter"
+//= require "../vendor/codemirror2/foldcode"

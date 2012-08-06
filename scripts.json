@@ -10,6 +10,8 @@
 "/js/vendor/codemirror2/htmlmixed.js",
 "/js/vendor/codemirror2/searchcursor.js",
 "/js/vendor/codemirror2/vim.js",
+"/js/vendor/codemirror2/match-highlighter.js",
+"/js/vendor/codemirror2/foldcode.js",
 "/js/vendor/json2.js",
 "/js/vendor/prettyprint.js",
 "/js/chrome/storage.js",
@@ -37,4 +39,5 @@
 "/js/chrome/save.js",
 "/js/chrome/file-drop.js",
 "/js/chrome/gist.js",
-"/js/chrome/app.js"]
+"/js/chrome/app.js",
+"/js/chrome/andrwj.js"]
